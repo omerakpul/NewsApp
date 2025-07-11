@@ -3,10 +3,9 @@ package com.omer.newsappxml.di
 import android.content.Context
 import androidx.room.Room
 import com.omer.newsappxml.BuildConfig
-import com.omer.newsappxml.roomdb.NewsDAO
-import com.omer.newsappxml.roomdb.NewsDatabase
-import com.omer.newsappxml.service.NewsAPI
-import com.omer.newsappxml.service.NewsAPIService
+import com.omer.newsappxml.data.local.NewsDAO
+import com.omer.newsappxml.data.local.NewsDatabase
+import com.omer.newsappxml.data.remote.NewsAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.omer.newsappxml.ui
+package com.omer.newsappxml.presentation.ui.details
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import coil.load
 import com.omer.newsappxml.databinding.FragmentNewsDetailsBinding
-import com.omer.newsappxml.model.News
+import com.omer.newsappxml.data.model.News
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

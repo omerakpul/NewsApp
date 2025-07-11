@@ -1,6 +1,6 @@
-package com.omer.newsappxml.service
+package com.omer.newsappxml.data.remote
 
-import com.omer.newsappxml.model.NewsResponse
+import com.omer.newsappxml.data.model.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

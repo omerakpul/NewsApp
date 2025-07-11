@@ -1,6 +1,6 @@
-package com.omer.newsappxml.model
+package com.omer.newsappxml.data.remote.dto
 
-data class ApiNews(
+data class ApiNewsDto(
     val author: String?,
     val title: String?,
     val description: String?,

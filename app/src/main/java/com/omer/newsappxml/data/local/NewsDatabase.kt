@@ -1,10 +1,8 @@
-package com.omer.newsappxml.roomdb
+package com.omer.newsappxml.data.local
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.omer.newsappxml.model.News
+import com.omer.newsappxml.data.model.News
 
 @Database(entities = [News::class], version = 5, exportSchema = false)
 abstract class NewsDatabase : RoomDatabase() {

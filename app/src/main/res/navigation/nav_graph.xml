@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/newsHomeFragment"
-        android:name="com.omer.newsappxml.ui.NewsHomeFragment"
+        android:name="com.omer.newsappxml.presentation.ui.home.NewsHomeFragment"
         android:label="NewsHomeFragment" >
         <action
             android:id="@+id/action_newsHomeFragment_to_newsDetailsFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/newsDetailsFragment"
-        android:name="com.omer.newsappxml.ui.NewsDetailsFragment"
+        android:name="com.omer.newsappxml.presentation.ui.details.NewsDetailsFragment"
         android:label="NewsDetailsFragment" >
         <action
             android:id="@+id/action_newsDetailsFragment_to_newsHomeFragment"

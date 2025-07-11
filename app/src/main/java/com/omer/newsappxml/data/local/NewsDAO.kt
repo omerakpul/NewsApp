@@ -1,10 +1,10 @@
-package com.omer.newsappxml.roomdb
+package com.omer.newsappxml.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.omer.newsappxml.model.News
+import com.omer.newsappxml.data.model.News
 
 @Dao
 interface NewsDAO {

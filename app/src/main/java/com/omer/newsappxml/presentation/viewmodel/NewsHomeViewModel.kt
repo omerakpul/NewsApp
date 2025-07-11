@@ -1,15 +1,11 @@
-package com.omer.newsappxml.viewmodel
+package com.omer.newsappxml.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omer.newsappxml.model.News
-import com.omer.newsappxml.roomdb.NewsDAO
-import com.omer.newsappxml.roomdb.NewsDatabase
-import com.omer.newsappxml.service.NewsAPI
-import com.omer.newsappxml.service.NewsAPIService
+import com.omer.newsappxml.data.model.News
+import com.omer.newsappxml.data.local.NewsDAO
+import com.omer.newsappxml.data.remote.NewsAPIService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

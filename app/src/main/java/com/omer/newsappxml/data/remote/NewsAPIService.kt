@@ -1,10 +1,8 @@
-package com.omer.newsappxml.service
+package com.omer.newsappxml.data.remote
 
 import com.omer.newsappxml.BuildConfig
-import com.omer.newsappxml.model.News
-import com.omer.newsappxml.model.toRoomNewsList
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.omer.newsappxml.data.model.News
+import com.omer.newsappxml.data.mapper.toRoomNewsList
 import javax.inject.Inject
 
 

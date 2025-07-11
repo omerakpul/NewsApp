@@ -1,12 +1,6 @@
-package com.omer.newsappxml.model
+package com.omer.newsappxml.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.io.Serializable
-
-@Entity
-data class News(
-    @PrimaryKey
+data class News (
     val url: String,
     val author: String?,
     val title: String?,
@@ -15,4 +9,4 @@ data class News(
     val content: String?,
     val category: String?,
     val country: String?
-) : Serializable
+)

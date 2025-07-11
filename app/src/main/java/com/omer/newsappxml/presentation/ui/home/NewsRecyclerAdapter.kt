@@ -1,14 +1,12 @@
-package com.omer.newsappxml.adapter
+package com.omer.newsappxml.presentation.ui.home
 
 import android.os.Bundle
-import android.text.Layout.Directions
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.omer.newsappxml.databinding.NewsRecyclerRowBinding
-import com.omer.newsappxml.model.News
-import com.omer.newsappxml.ui.NewsHomeFragmentDirections
+import com.omer.newsappxml.data.model.News
 import coil.load
 import com.omer.newsappxml.R
 
