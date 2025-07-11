@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newsHomeFragment">
+
+    <fragment
+        android:id="@+id/newsHomeFragment"
+        android:name="com.omer.newsappxml.ui.NewsHomeFragment"
+        android:label="NewsHomeFragment" >
+        <action
+            android:id="@+id/action_newsHomeFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.omer.newsappxml.ui.NewsDetailsFragment"
+        android:label="NewsDetailsFragment" >
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_newsHomeFragment"
+            app:destination="@id/newsHomeFragment" />
+    </fragment>
+</navigation>
