@@ -40,7 +40,9 @@ class NewsHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.takeDataFromRoom()
+        val defaultCountry = "us"
+        val defaultCategory = "general"
+        viewModel.takeDataFromRoom(defaultCountry, defaultCategory)
 
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.newsRecyclerView.adapter = newsRecyclerAdapter

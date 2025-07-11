@@ -27,10 +27,10 @@ class NewsHomeViewModel @Inject constructor(
     val newsLoading = MutableLiveData<Boolean>()
     private var allNews: List<News> = listOf()
 
-    fun takeDataFromRoom() {
+    fun takeDataFromRoom(country: String, category: String) {
         newsLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            val newsList = newsDao.getAllNews()
+            val newsList = newsDao.getFilteredNews(country,category)
             withContext(Dispatchers.Main) {
                 showNews(newsList)
             }
