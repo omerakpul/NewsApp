@@ -23,7 +23,4 @@ interface NewsDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(news: List<News>) : List<Long>
-
-
-
 }
