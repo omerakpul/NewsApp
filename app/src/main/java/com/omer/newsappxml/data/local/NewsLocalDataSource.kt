@@ -1,7 +1,5 @@
 package com.omer.newsappxml.data.local
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import com.omer.newsappxml.data.model.News as NewsEntity
 import javax.inject.Inject
 
