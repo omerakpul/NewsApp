@@ -6,7 +6,6 @@ import javax.inject.Inject
 class NewsRemoteDataSource @Inject constructor(
     private val apiService: NewsAPIService
 ) {
-    suspend fun fetchNews(country: String, category: String): List<ApiNewsDto> {
+    suspend fun fetchNews(country: String, category: String): List<ApiNewsDto> =
         apiService.getDataByCategory(country, category)
-    }
 }
