@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FAFAFA"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -9,30 +12,49 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/newsDetailImageView"
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/round_gray_bg"
+            android:src="@drawable/ic_arrow_back_24"
+            android:contentDescription="Geri"
+            android:scaleType="center"
+            app:tint="@android:color/black"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp"/>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Haber Fotoğrafı"
-            android:background="#DDD" />
+            app:cardCornerRadius="32dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/newsImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="#DDD"/>
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/newsDetailTitle"
+            android:id="@+id/newsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Haber Başlığı"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginTop="16dp" />
+            android:textSize="22sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="12dp"/>
 
         <TextView
-            android:id="@+id/newsDetailDescription"
+            android:id="@+id/newsDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Haber açıklaması veya içeriği burada olacak."
             android:textSize="16sp"
-            android:layout_marginTop="12dp"/>
-
+            android:textColor="@android:color/darker_gray"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="24dp"/>
     </LinearLayout>
 </ScrollView>
