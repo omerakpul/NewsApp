@@ -122,12 +122,6 @@ This project does not specify a license. Please contact the owner for usage term
 
 ---
 
-## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
 ## Troubleshooting
 
 - Ensure your API key is correctly set.
@@ -135,7 +129,3 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 - For database migration issues, the app uses destructive migration on Room.
 
 ---
-
-## Contact
-
-For questions, please open an issue or reach out via GitHub.
