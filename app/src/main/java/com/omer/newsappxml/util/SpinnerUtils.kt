@@ -1,11 +1,11 @@
 package com.omer.newsappxml.util
 
-import android.R
 import android.content.Context
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.omer.newsappxml.R
 
 object SpinnerUtils {
     fun setupSpinner(
@@ -14,8 +14,8 @@ object SpinnerUtils {
         items: Array<String>,
         onItemSelected: () -> Unit
     ) {
-        val adapter = ArrayAdapter(context, R.layout.simple_spinner_item, items)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        val adapter = ArrayAdapter(context, R.layout.spinner_item, items)
+        adapter.setDropDownViewResource(R.layout.spinner_item_dropdown)
         spinner.adapter = adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

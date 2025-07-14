@@ -1,0 +1,12 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:textColor="#222222"
+    android:textSize="15sp"
+    android:textStyle="normal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:maxLines="1"
+    android:ellipsize="end"/>
