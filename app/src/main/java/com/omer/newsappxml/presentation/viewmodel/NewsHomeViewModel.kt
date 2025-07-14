@@ -1,5 +1,6 @@
 package com.omer.newsappxml.presentation.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,52 +13,45 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsHomeViewModel @Inject constructor(
-    private val newsUseCases : NewsUseCases
+    private val newsUseCases : NewsUseCases,
 ) : ViewModel() {
 
-    val news = MutableLiveData<List<News>>()
-    val newsError = MutableLiveData<Boolean>()
-    val newsLoading = MutableLiveData<Boolean>()
+    private val _newsState = MutableLiveData<NewsUiState>()
+    val newsState: LiveData<NewsUiState> = _newsState
 
     fun getNews(country:String, category: String){
         viewModelScope.launch {
-            newsLoading.value = true
+            _newsState.value= NewsUiState.Loading
             try {
-                news.value = newsUseCases.getNews(country, category)
-                newsError.value = false
+                val result = newsUseCases.getNews(country, category)
+                _newsState.value = NewsUiState.Success(result)
             } catch (e:Exception) {
-                newsError.value = true
-            } finally {
-                newsLoading.value = false
+                _newsState.value = NewsUiState.Error(e.message)
             }
         }
     }
 
     fun refreshNews(country: String,category: String){
         viewModelScope.launch {
-            newsLoading.value = true
+            _newsState.value = NewsUiState.Loading
             try {
                 newsUseCases.refreshNews(country, category)
-                news.value = newsUseCases.getNews(country, category)
-                newsError.value = false
+                val result = newsUseCases.getNews(country, category)
+                _newsState.value = NewsUiState.Success(result)
             } catch (e:Exception) {
-                newsError.value = true
-            } finally {
-                newsLoading.value = false
+                _newsState.value = NewsUiState.Error(e.message)
             }
         }
     }
 
     fun searchNews(query:String,country: String, category: String) {
         viewModelScope.launch {
-            newsLoading.value = true
+            _newsState.value = NewsUiState.Loading
             try {
-                news.value = newsUseCases.searchNews(query,country, category)
-                newsError.value = false
+                val result = newsUseCases.searchNews(query,country, category)
+                _newsState.value = NewsUiState.Success(result)
             } catch (e: Exception) {
-                newsError.value = true
-            } finally {
-                newsLoading.value = false
+                _newsState.value = NewsUiState.Error(e.message)
             }
         }
     }
