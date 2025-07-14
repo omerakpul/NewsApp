@@ -1,8 +1,6 @@
 package com.omer.newsappxml.data.remote
 
 import com.omer.newsappxml.BuildConfig
-import com.omer.newsappxml.data.model.News
-import com.omer.newsappxml.data.mapper.toRoomNewsList
 import com.omer.newsappxml.data.remote.dto.ApiNewsDto
 import javax.inject.Inject
 
