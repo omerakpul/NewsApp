@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.omer.newsappxml.R
 import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.viewmodel.NewsHomeViewModel
+import com.omer.newsappxml.presentation.viewmodel.NewsUiState
 import com.omer.newsappxml.util.SpinnerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,7 +43,8 @@ class NewsHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.news.value.isNullOrEmpty()) {
+        val currentState = viewModel.newsState.value
+        if( currentState !is NewsUiState.Success) {
             viewModel.getNews(selectedCountry,selectedCategory)
         }
 
@@ -50,15 +52,9 @@ class NewsHomeFragment : Fragment() {
         binding.newsRecyclerView.adapter = newsRecyclerAdapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            binding.newsRecyclerView.visibility = View.GONE
-            binding.newsErrorMessage.visibility = View.GONE
-            binding.newsProgressBar.visibility = View.VISIBLE
-
-
             viewModel.refreshNews(selectedCountry,selectedCategory)
-            viewModel.getNews(selectedCountry,selectedCategory)
-            binding.swipeRefreshLayout.isRefreshing = false
         }
+
         observeLiveData()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -89,25 +85,27 @@ class NewsHomeFragment : Fragment() {
     }
 
     private fun observeLiveData(){
-        viewModel.news.observe(viewLifecycleOwner){
-            newsRecyclerAdapter.updateNews(it)
-            binding.newsRecyclerView.visibility=View.VISIBLE
-        }
-        viewModel.newsError.observe(viewLifecycleOwner){
-            if(it) {
-                binding.newsErrorMessage.visibility = View.VISIBLE
+        viewModel.newsState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+            is NewsUiState.Loading -> {
+                binding.newsProgressBar.visibility = View.VISIBLE
                 binding.newsRecyclerView.visibility = View.GONE
-            } else {
                 binding.newsErrorMessage.visibility = View.GONE
             }
-        }
-        viewModel.newsLoading.observe(viewLifecycleOwner){
-            if(it) {
-                binding.newsErrorMessage.visibility = View.GONE
-                binding.newsRecyclerView.visibility = View.GONE
-                binding.newsProgressBar.visibility = View.VISIBLE
-            } else {
+            is NewsUiState.Success -> {
                 binding.newsProgressBar.visibility = View.GONE
+                binding.newsRecyclerView.visibility = View.VISIBLE
+                binding.newsErrorMessage.visibility = View.GONE
+                newsRecyclerAdapter.updateNews(state.news)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+            is NewsUiState.Error -> {
+                binding.newsProgressBar.visibility = View.GONE
+                binding.newsRecyclerView.visibility = View.GONE
+                binding.newsErrorMessage.visibility = View.VISIBLE
+                binding.newsErrorMessage.text = state.message ?: "An error occurred"
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
             }
         }
     }
