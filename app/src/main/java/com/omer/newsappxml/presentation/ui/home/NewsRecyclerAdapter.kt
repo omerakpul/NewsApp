@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.omer.newsappxml.databinding.NewsRecyclerRowBinding
-import com.omer.newsappxml.data.model.News
+import com.omer.newsappxml.data.model.News as NewsEntity
 import coil.load
 import com.omer.newsappxml.R
+import com.omer.newsappxml.domain.model.News
 
 class NewsRecyclerAdapter(val newsList : ArrayList<News>) : RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>() {
 
@@ -23,9 +24,9 @@ class NewsRecyclerAdapter(val newsList : ArrayList<News>) : RecyclerView.Adapter
         return newsList.size
     }
 
-    fun updateNews(newNewsList : List<News>) {
+    fun updateNews(NewsList : List<News>) {
         newsList.clear()
-        newsList.addAll(newNewsList)
+        newsList.addAll(NewsList)
         notifyDataSetChanged()
     }
 
