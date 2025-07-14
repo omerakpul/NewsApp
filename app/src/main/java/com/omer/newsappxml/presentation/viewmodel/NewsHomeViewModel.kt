@@ -3,94 +3,61 @@ package com.omer.newsappxml.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omer.newsappxml.data.model.News
-import com.omer.newsappxml.data.local.NewsDAO
-import com.omer.newsappxml.data.remote.NewsAPIService
+import com.omer.newsappxml.domain.model.News
+import com.omer.newsappxml.domain.usecase.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 @HiltViewModel
 class NewsHomeViewModel @Inject constructor(
-    private val newsAPIService: NewsAPIService,
-    private val newsDao: NewsDAO,
+    private val newsUseCases : NewsUseCases
 ) : ViewModel() {
+
     val news = MutableLiveData<List<News>>()
-    val newsErrorMessage = MutableLiveData<Boolean>()
+    val newsError = MutableLiveData<Boolean>()
     val newsLoading = MutableLiveData<Boolean>()
-    private var allNews: List<News> = listOf()
 
-    fun takeDataFromRoom(country: String, category: String) {
-        newsLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val newsList = newsDao.getFilteredNews(country,category)
-            withContext(Dispatchers.Main) {
-                showNews(newsList)
-            }
-        }
-    }
-
-    fun takeDataFromInternet(country: String, category: String) {
-        newsLoading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
+    fun getNews(country:String, category: String){
+        viewModelScope.launch {
+            newsLoading.value = true
             try {
-                val newsList = newsAPIService.getDataByCategory(country,category)
-                newsDao.deleteFilteredNews(country,category)
-                newsDao.insertAll(newsList)
-                val updatedNews = newsDao.getFilteredNews(country,category)
-                withContext(Dispatchers.Main) {
-                    showNews(updatedNews)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    newsErrorMessage.value = true
-                    newsLoading.value = false
-                }
+                news.value = newsUseCases.getNews(country, category)
+                newsError.value = false
+            } catch (e:Exception) {
+                newsError.value = true
+            } finally {
+                newsLoading.value = false
             }
         }
     }
 
-    private fun showNews(newsList: List<News>) {
-        allNews = newsList
-        news.value = newsList
-        newsErrorMessage.value = false
-        newsLoading.value = false
-    }
-
-    fun searchNews(query: String) {
-        val filteredNews = allNews.filter { news ->
-            news.title?.contains(query, ignoreCase = true) == true ||
-                    news.description?.contains(query, ignoreCase = true) == true
+    fun refreshNews(country: String,category: String){
+        viewModelScope.launch {
+            newsLoading.value = true
+            try {
+                newsUseCases.refreshNews(country, category)
+                news.value = newsUseCases.getNews(country, category)
+                newsError.value = false
+            } catch (e:Exception) {
+                newsError.value = true
+            } finally {
+                newsLoading.value = false
             }
-        news.value = filteredNews
+        }
     }
 
-    fun getNewsRoomOrInternet(country: String,category: String){
-    newsLoading.value = true
-        viewModelScope.launch(Dispatchers.IO){
-            val newsList = newsDao.getFilteredNews(country, category)
-            if(newsList.isNotEmpty()){
-                withContext(Dispatchers.Main){
-                    showNews(newsList)
-                }
-            } else {
-                try {
-                    val apiNews = newsAPIService.getDataByCategory(country,category)
-                    newsDao.deleteFilteredNews(country,category)
-                    newsDao.insertAll(apiNews)
-                    val updatedNews = newsDao.getFilteredNews(country,category)
-                    withContext(Dispatchers.Main) {
-                        showNews(updatedNews)
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        newsErrorMessage.value = true
-                        newsLoading.value = false
-                    }
-                }
+    fun searchNews(query:String,country: String, category: String) {
+        viewModelScope.launch {
+            newsLoading.value = true
+            try {
+                news.value = newsUseCases.searchNews(query,country, category)
+                newsError.value = false
+            } catch (e: Exception) {
+                newsError.value = true
+            } finally {
+                newsLoading.value = false
             }
         }
     }
