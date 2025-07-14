@@ -1,10 +1,10 @@
 package com.omer.newsappxml.domain.usecase
 
 import com.omer.newsappxml.domain.repository.NewsRepository
+import com.omer.newsappxml.domain.model.News
 
 class GetNewsUseCase(private val repo : NewsRepository) {
-
-    suspend operator fun invoke(country:String, category:String){
-        repo.getNews(country,category)
+    suspend operator fun invoke(country:String, category:String): List<News> {
+        return repo.getNews(country, category)
     }
 }
