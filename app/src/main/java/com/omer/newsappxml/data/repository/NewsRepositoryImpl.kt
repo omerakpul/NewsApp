@@ -32,8 +32,8 @@ class NewsRepositoryImpl @Inject constructor(
         localDataSource.insertNews(entities)
     }
 
-    override suspend fun searchNews(query: String): List<News> {
-        val allEntities = localDataSource.getAllNews()
+    override suspend fun searchNews(query: String,country: String, category: String): List<News> {
+        val allEntities = localDataSource.getNews(country,category)
         val filtered = allEntities.filter {
             it.title?.contains(query, true) == true ||
                     it.description?.contains(query, true) == true }
