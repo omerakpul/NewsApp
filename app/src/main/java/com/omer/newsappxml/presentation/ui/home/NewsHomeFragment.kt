@@ -5,14 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omer.newsappxml.R
 import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.viewmodel.NewsHomeViewModel
+import com.omer.newsappxml.util.SpinnerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +21,11 @@ class NewsHomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: NewsHomeViewModel by viewModels()
     private val newsRecyclerAdapter = NewsRecyclerAdapter(arrayListOf())
+
+    private val selectedCountry: String
+        get() = binding.countrySpinner.selectedItem as? String ?: "us"
+    private val selectedCategory: String
+        get() = binding.filterSpinner.selectedItem as? String ?: "general"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +42,9 @@ class NewsHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val defaultCountry = "us"
-        val defaultCategory = "general"
-        viewModel.takeDataFromRoom(defaultCountry, defaultCategory)
+        if (viewModel.news.value.isNullOrEmpty()) {
+            viewModel.getNews(selectedCountry,selectedCategory)
+        }
 
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.newsRecyclerView.adapter = newsRecyclerAdapter
@@ -51,61 +55,37 @@ class NewsHomeFragment : Fragment() {
             binding.newsProgressBar.visibility = View.VISIBLE
 
 
-            val selectedCountry = binding.countrySpinner.selectedItem as String
-            val selectedCategory = binding.filterSpinner.selectedItem as String
-
-            viewModel.takeDataFromInternet(selectedCountry, selectedCategory)
+            viewModel.refreshNews(selectedCountry,selectedCategory)
+            viewModel.getNews(selectedCountry,selectedCategory)
             binding.swipeRefreshLayout.isRefreshing = false
         }
-
         observeLiveData()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { viewModel.searchNews(it) }
                 return true
             }
             override fun onQueryTextChange(newSearch: String?): Boolean {
-                newSearch?.let { viewModel.searchNews(it) }
+                newSearch?.let { viewModel.searchNews(it,selectedCountry,selectedCategory) }
                 return true
             }
         })
 
         val countries = resources.getStringArray(R.array.country_list)
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, countries)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        binding.countrySpinner.adapter = adapter
-
-        binding.countrySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCountry = countries[position]
-                val selectedCategory = binding.filterSpinner.selectedItem as String
-
-                viewModel.getNewsRoomOrInternet(selectedCountry,selectedCategory)
-                binding.searchView.setQuery("", false)
-                binding.searchView.clearFocus()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-        }
-
         val categories = resources.getStringArray(R.array.category_list)
-        val adapterFilter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
-        binding.filterSpinner.adapter = adapterFilter
 
-        binding.filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                val selectedCountry = binding.countrySpinner.selectedItem as String
-                val selectedCategory = categories[position]
-
-                viewModel.getNewsRoomOrInternet(selectedCountry,selectedCategory)
-                binding.searchView.setQuery("", false)
-                binding.searchView.clearFocus()
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        SpinnerUtils.setupSpinner(requireContext(), binding.countrySpinner, countries) {
+            viewModel.getNews(selectedCountry,selectedCategory)
+            binding.searchView.setQuery("", false)
+            binding.searchView.clearFocus()
         }
+
+        SpinnerUtils.setupSpinner(requireContext(), binding.filterSpinner, categories) {
+            viewModel.getNews(selectedCountry,selectedCategory)
+            binding.searchView.setQuery("", false)
+            binding.searchView.clearFocus()
+        }
+
     }
 
     private fun observeLiveData(){
@@ -113,7 +93,7 @@ class NewsHomeFragment : Fragment() {
             newsRecyclerAdapter.updateNews(it)
             binding.newsRecyclerView.visibility=View.VISIBLE
         }
-        viewModel.newsErrorMessage.observe(viewLifecycleOwner){
+        viewModel.newsError.observe(viewLifecycleOwner){
             if(it) {
                 binding.newsErrorMessage.visibility = View.VISIBLE
                 binding.newsRecyclerView.visibility = View.GONE
