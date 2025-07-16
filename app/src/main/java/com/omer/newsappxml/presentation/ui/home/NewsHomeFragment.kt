@@ -13,6 +13,8 @@ import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.viewmodel.NewsHomeViewModel
 import com.omer.newsappxml.presentation.viewmodel.NewsUiState
 import com.omer.newsappxml.util.SpinnerUtils
+import com.omer.newsappxml.util.hide
+import com.omer.newsappxml.util.show
 import com.omer.newsappxml.util.successOperation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -86,23 +88,21 @@ class NewsHomeFragment : Fragment() {
         viewModel.newsState.observe(viewLifecycleOwner) { state ->
             when (state) {
             is NewsUiState.Loading -> {
-                binding.newsProgressBar.visibility = View.VISIBLE
-                binding.newsRecyclerView.visibility = View.GONE
-                binding.newsErrorMessage.visibility = View.GONE
+                binding.newsProgressBar.show()
+                binding.newsRecyclerView.hide()
+                binding.newsErrorMessage.hide()
             }
             is NewsUiState.Success -> {
-                successOperation(true) {
-                    binding.newsProgressBar.visibility = View.GONE
-                    binding.newsRecyclerView.visibility = View.VISIBLE
-                    binding.newsErrorMessage.visibility = View.GONE
+                    binding.newsProgressBar.hide()
+                    binding.newsRecyclerView.show()
+                    binding.newsErrorMessage.hide()
                     newsRecyclerAdapter.updateNews(state.news)
                     binding.swipeRefreshLayout.isRefreshing = false
-                }
             }
             is NewsUiState.Error -> {
-                binding.newsProgressBar.visibility = View.GONE
-                binding.newsRecyclerView.visibility = View.GONE
-                binding.newsErrorMessage.visibility = View.VISIBLE
+                binding.newsProgressBar.hide()
+                binding.newsRecyclerView.hide()
+                binding.newsErrorMessage.show()
                 binding.newsErrorMessage.text = state.message ?: "An error occurred"
                 binding.swipeRefreshLayout.isRefreshing = false
             }
