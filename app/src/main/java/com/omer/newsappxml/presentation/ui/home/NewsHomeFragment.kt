@@ -13,9 +13,9 @@ import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.viewmodel.NewsHomeViewModel
 import com.omer.newsappxml.presentation.viewmodel.NewsUiState
 import com.omer.newsappxml.util.SpinnerUtils
+import com.omer.newsappxml.util.clear
 import com.omer.newsappxml.util.hide
 import com.omer.newsappxml.util.show
-import com.omer.newsappxml.util.successOperation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,14 +72,12 @@ class NewsHomeFragment : Fragment() {
 
         SpinnerUtils.setupSpinner(requireContext(), binding.countrySpinner, countries) {
             viewModel.getNews(selectedCountry,selectedCategory,false)
-            binding.searchView.setQuery("", false)
-            binding.searchView.clearFocus()
+            binding.searchView.clear()
         }
 
         SpinnerUtils.setupSpinner(requireContext(), binding.filterSpinner, categories) {
             viewModel.getNews(selectedCountry,selectedCategory,false)
-            binding.searchView.setQuery("", false)
-            binding.searchView.clearFocus()
+            binding.searchView.clear()
         }
 
     }
