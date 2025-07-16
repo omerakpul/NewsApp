@@ -13,23 +13,24 @@ class NewsRepositoryImpl @Inject constructor(
     private val remoteDataSource: NewsRemoteDataSource
 ) : NewsRepository {
 
-    override suspend fun getNews(country: String, category: String): List<News> {
+    override suspend fun getNews(country: String, category: String, fromInternet: Boolean): List<News> {
         val localEntities = localDataSource.getNews(country, category)
-        if (localEntities.isNotEmpty()) {
-            return localEntities.map { it.toDomain() }
-        } else {
+        if (fromInternet == true) {
             val remoteDtos = remoteDataSource.fetchNews(country, category)
-            val entities = remoteDtos.map { it.toEntity(country,category)}
+            val entities = remoteDtos.map { it.toEntity(country, category) }
+            localDataSource.deleteNews(country, category)
             localDataSource.insertNews(entities)
             return localDataSource.getNews(country, category).map { it.toDomain() }
+        } else {
+            if (localEntities.isNotEmpty()) {
+                return localEntities.map { it.toDomain() }
+            } else {
+                val remoteDtos = remoteDataSource.fetchNews(country, category)
+                val entities = remoteDtos.map { it.toEntity(country,category)}
+                localDataSource.insertNews(entities)
+                return localDataSource.getNews(country, category).map { it.toDomain() }
+            }
         }
-    }
-
-    override suspend fun refreshNews(country: String, category: String) {
-        val remoteDtos = remoteDataSource.fetchNews(country, category)
-        val entities = remoteDtos.map {it.toEntity(country, category)}
-        localDataSource.deleteNews(country, category)
-        localDataSource.insertNews(entities)
     }
 
     override suspend fun searchNews(query: String,country: String, category: String): List<News> {

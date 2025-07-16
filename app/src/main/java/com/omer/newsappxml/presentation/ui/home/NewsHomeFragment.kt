@@ -13,6 +13,7 @@ import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.viewmodel.NewsHomeViewModel
 import com.omer.newsappxml.presentation.viewmodel.NewsUiState
 import com.omer.newsappxml.util.SpinnerUtils
+import com.omer.newsappxml.util.successOperation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,16 +44,13 @@ class NewsHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentState = viewModel.newsState.value
-        if( currentState !is NewsUiState.Success) {
-            viewModel.getNews(selectedCountry,selectedCategory)
-        }
+        viewModel.getNews(selectedCountry,selectedCategory,false)
 
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.newsRecyclerView.adapter = newsRecyclerAdapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshNews(selectedCountry,selectedCategory)
+            viewModel.getNews(selectedCountry,selectedCategory, true)
         }
 
         observeLiveData()
@@ -71,13 +69,13 @@ class NewsHomeFragment : Fragment() {
         val categories = resources.getStringArray(R.array.category_list)
 
         SpinnerUtils.setupSpinner(requireContext(), binding.countrySpinner, countries) {
-            viewModel.getNews(selectedCountry,selectedCategory)
+            viewModel.getNews(selectedCountry,selectedCategory,false)
             binding.searchView.setQuery("", false)
             binding.searchView.clearFocus()
         }
 
         SpinnerUtils.setupSpinner(requireContext(), binding.filterSpinner, categories) {
-            viewModel.getNews(selectedCountry,selectedCategory)
+            viewModel.getNews(selectedCountry,selectedCategory,false)
             binding.searchView.setQuery("", false)
             binding.searchView.clearFocus()
         }
@@ -93,11 +91,13 @@ class NewsHomeFragment : Fragment() {
                 binding.newsErrorMessage.visibility = View.GONE
             }
             is NewsUiState.Success -> {
-                binding.newsProgressBar.visibility = View.GONE
-                binding.newsRecyclerView.visibility = View.VISIBLE
-                binding.newsErrorMessage.visibility = View.GONE
-                newsRecyclerAdapter.updateNews(state.news)
-                binding.swipeRefreshLayout.isRefreshing = false
+                successOperation(true) {
+                    binding.newsProgressBar.visibility = View.GONE
+                    binding.newsRecyclerView.visibility = View.VISIBLE
+                    binding.newsErrorMessage.visibility = View.GONE
+                    newsRecyclerAdapter.updateNews(state.news)
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
             }
             is NewsUiState.Error -> {
                 binding.newsProgressBar.visibility = View.GONE

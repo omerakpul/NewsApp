@@ -16,7 +16,6 @@ object UseCaseModule {
     ) : NewsUseCases {
         return NewsUseCases(
             getNews = GetNewsUseCase(newsRepository),
-            refreshNews = RefreshNewsUseCase(newsRepository),
             searchNews = SearchNewsUseCase(newsRepository)
         )
     }

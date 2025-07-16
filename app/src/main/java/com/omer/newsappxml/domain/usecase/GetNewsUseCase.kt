@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetNewsUseCase @Inject constructor(
     private val repo : NewsRepository
 ) {
-    suspend operator fun invoke(country:String, category:String): List<News> {
-        return repo.getNews(country, category)
+    suspend operator fun invoke(country:String, category:String, fromInternet: Boolean = false): List<News> {
+        return repo.getNews(country, category, fromInternet)
     }
 }
