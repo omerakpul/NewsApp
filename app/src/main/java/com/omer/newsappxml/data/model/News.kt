@@ -2,7 +2,6 @@ package com.omer.newsappxml.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 @Entity
 data class News(
@@ -15,4 +14,4 @@ data class News(
     val content: String?,
     val category: String?,
     val country: String?
-) : Serializable
+)

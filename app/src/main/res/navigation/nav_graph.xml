@@ -19,5 +19,7 @@
         <action
             android:id="@+id/action_newsDetailsFragment_to_newsHomeFragment"
             app:destination="@id/newsHomeFragment" />
+        <argument android:name="news"
+            app:argType="com.omer.newsappxml.domain.model.News" />
     </fragment>
 </navigation>

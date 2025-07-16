@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil.load
 import com.omer.newsappxml.databinding.FragmentNewsDetailsBinding
-import com.omer.newsappxml.domain.model.News
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +16,7 @@ class NewsDetailsFragment : Fragment() {
 
     private var _binding : FragmentNewsDetailsBinding? = null
     private val binding get() = _binding!!
+    private val args: NewsDetailsFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class NewsDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val news = arguments?.getSerializable("news") as? News
+        val news = args.news
 
         if (news != null) {
             binding.newsTitle.text = news.title
