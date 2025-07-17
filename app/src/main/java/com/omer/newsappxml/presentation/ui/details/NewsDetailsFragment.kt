@@ -7,25 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewbinding.ViewBinding
 import coil.load
 import com.omer.newsappxml.databinding.FragmentNewsDetailsBinding
+import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
+import com.omer.newsappxml.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewsDetailsFragment : Fragment() {
+class NewsDetailsFragment : BaseFragment<FragmentNewsDetailsBinding>() {
 
-    private var _binding : FragmentNewsDetailsBinding? = null
-    private val binding get() = _binding!!
     private val args: NewsDetailsFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentNewsDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+    override fun inflateBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentNewsDetailsBinding {
+        return FragmentNewsDetailsBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,10 +43,5 @@ class NewsDetailsFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
