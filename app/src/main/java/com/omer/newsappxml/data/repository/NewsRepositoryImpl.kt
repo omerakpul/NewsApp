@@ -15,7 +15,7 @@ class NewsRepositoryImpl @Inject constructor(
 
     override suspend fun getNews(country: String, category: String, fromInternet: Boolean): List<News> {
         val localEntities = localDataSource.getNews(country, category)
-        if (fromInternet == true) {
+        if (fromInternet) {
             val remoteDtos = remoteDataSource.fetchNews(country, category)
             val entities = remoteDtos.map { it.toEntity(country, category) }
             localDataSource.deleteNews(country, category)
