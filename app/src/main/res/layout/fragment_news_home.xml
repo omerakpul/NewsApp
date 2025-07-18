@@ -26,7 +26,7 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:queryHint="Haber ara..."
+                app:queryHint="@string/search_hint"
                 app:iconifiedByDefault="false"
                 android:background="@android:color/white"
                 android:padding="6dp"/>

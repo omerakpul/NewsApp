@@ -18,4 +18,6 @@
         <item>Sports</item>
         <item>Technology</item>
     </string-array>
+
+    <string name="search_hint">Search News</string>
 </resources>

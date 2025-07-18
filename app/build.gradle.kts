@@ -63,6 +63,18 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("free") {
+            dimension = "version"
+            applicationIdSuffix = ".free"
+            versionNameSuffix = "-free"
+        }
+        create("pro") {
+            dimension = "version"
+        }
+    }
 }
 
 dependencies {

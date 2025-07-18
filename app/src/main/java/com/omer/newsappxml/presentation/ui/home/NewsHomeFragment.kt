@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.omer.newsappxml.BuildConfig
 import com.omer.newsappxml.R
 import com.omer.newsappxml.databinding.FragmentNewsHomeBinding
 import com.omer.newsappxml.presentation.base.BaseFragment
@@ -55,16 +57,26 @@ class NewsHomeFragment : BaseFragment<FragmentNewsHomeBinding>() {
             viewModel.getNews(selectedCountry, selectedCategory, true)
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+        if(BuildConfig.FLAVOR == "free"){
+            val searchEditText = binding.searchView.findViewById<AutoCompleteTextView>(
+                androidx.appcompat.R.id.search_src_text
+            )
+            searchEditText?.isEnabled = false
+            searchEditText?.isClickable = false
+            searchEditText?.clearFocus()
 
-            override fun onQueryTextChange(newSearch: String?): Boolean {
-                newSearch?.let { viewModel.searchNews(it, selectedCountry, selectedCategory) }
-                return true
-            }
-        })
+        } else {
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newSearch: String?): Boolean {
+                    newSearch?.let { viewModel.searchNews(it, selectedCountry, selectedCategory) }
+                    return true
+                }
+            })
+        }
 
         val countries = resources.getStringArray(R.array.country_list)
         val categories = resources.getStringArray(R.array.category_list)
