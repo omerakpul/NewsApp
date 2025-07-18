@@ -1,6 +1,6 @@
-# NewsAppXML
+# NewsApp
 
-**NewsAppXML** is a modern Android application built with Kotlin that fetches, displays, and manages news articles from remote APIs based on category and country, integrating local caching and offering search capabilities. The project leverages best practices in architecture and utilizes advanced libraries such as Dagger Hilt for dependency injection and Room for local database storage.
+**NewsApp** is a modern Android application built with Kotlin that fetches, displays, and manages news articles from remote APIs based on category and country, integrating local caching and offering search capabilities. The project leverages best practices in architecture and utilizes advanced libraries such as Dagger Hilt for dependency injection and Room for local database storage.
 
 ---
 
@@ -13,6 +13,8 @@
 - **Details View:** Tap any headline to view complete news details, including images and full article content.
 - **MVVM + Clean Architecture:** Separation of concerns using repository, use case, and presentation layers.
 - **Dependency Injection:** Dagger Hilt is used throughout for robust and testable architecture.
+- **Centralized Dependency Management:** All library versions are managed in one place using Gradle Version Catalogs (`libs.versions.toml`).
+- **Multiple Flavors:** Build and run the app as either a Free version (limited categories, only US news) or a Pro version (all features and countries) from the same codebase.
 
 ---
 
@@ -23,7 +25,7 @@ Domain Layer
   ↳ Repository interfaces, UseCases
 
 Data Layer
-  ↳ Remote API (Retrofit), Local database (Room), Data mapping
+  ↳ Remote API (Retrofit), Local database (Room), Data mapping, Repository implementations
 
 Presentation Layer
   ↳ Fragments, ViewModels, UI States
@@ -77,6 +79,7 @@ DI Layer
 
 - **Details Screen:**  
   - Tap a headline for details and image.
+  - Go back to home screen.
 
 ---
 
@@ -88,6 +91,7 @@ DI Layer
 - **`NewsRepositoryImpl`**: Handles local/remote data sources.
 - **Room Entities & DAO**: For persistent local storage.
 - **Dagger Hilt Modules**: AppModule, RepositoryModule, UseCaseModule for DI.
+- **BaseFragment**: All fragments inherit from this class to share common UI logic and reduce code duplication.
 
 ---
 
