@@ -9,4 +9,5 @@
     </string-array>
     
     <string name="search_hint">Search is available in PRO version.</string>
+    <string name="app_name">NewsApp FREE</string>
 </resources>
