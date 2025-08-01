@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.omer.newsappxml.BuildConfig
 import com.omer.newsappxml.data.local.NewsDAO
 import com.omer.newsappxml.data.local.NewsDatabase
-import com.omer.newsappxml.data.remote.NewsAPI
+import com.omer.newsappxml.data.remote.NewsAPIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,8 +31,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsAPI(retrofit: Retrofit) : NewsAPI {
-        return retrofit.create(NewsAPI::class.java)
+    fun provideNewsAPIService(retrofit: Retrofit) : NewsAPIService {
+        return retrofit.create(NewsAPIService::class.java)
     }
 
     @Provides
