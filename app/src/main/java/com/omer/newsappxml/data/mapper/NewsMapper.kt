@@ -2,7 +2,7 @@ package com.omer.newsappxml.data.mapper
 
 import com.omer.newsappxml.data.remote.dto.ApiNewsDto
 import com.omer.newsappxml.domain.model.News
-import com.omer.newsappxml.data.model.News as NewsEntity
+import com.omer.newsappxml.data.model.NewsEntity as NewsEntity
 
     fun NewsEntity.toDomain(): News = News(
         title = title ?: "No title",

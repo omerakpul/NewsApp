@@ -1,6 +1,6 @@
 package com.omer.newsappxml.data.local
 
-import com.omer.newsappxml.data.model.News as NewsEntity
+import com.omer.newsappxml.data.model.NewsEntity as NewsEntity
 import javax.inject.Inject
 
 class NewsLocalDataSource @Inject constructor(
