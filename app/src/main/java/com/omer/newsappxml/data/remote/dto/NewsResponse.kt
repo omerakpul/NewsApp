@@ -1,6 +1,4 @@
-package com.omer.newsappxml.data.model
-
-import com.omer.newsappxml.data.remote.dto.ApiNewsDto
+package com.omer.newsappxml.data.remote.dto
 
 data class NewsResponse(
     val status: String,
